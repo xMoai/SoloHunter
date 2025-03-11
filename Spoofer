@@ -1,0 +1,575 @@
+local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
+
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+
+local Window = Library:CreateWindow({
+    Title = 'Solo Hunter | Spoofer',
+    Center = true,
+    AutoShow = true,
+    TabPadding = 8,
+    MenuFadeTime = 0.2
+})
+
+local Tabs = {
+    Main = Window:AddTab('Main'),
+    Visuals = Window:AddTab('Visuals'),
+    ['Settings'] = Window:AddTab('Settings'),
+}
+local LeftGroupBox = Tabs.Main:AddLeftGroupbox('I Stats')
+local LeftGroupBox2 = Tabs.Main:AddLeftGroupbox('III Stats')
+local RightGroupBox = Tabs.Main:AddRightGroupbox('II Stats')
+local LeftGroupBox3 = Tabs.Visuals:AddLeftGroupbox('Test')
+
+LeftGroupBox:AddDivider()
+LeftGroupBox2:AddDivider()
+LeftGroupBox3:AddDivider()
+RightGroupBox:AddDivider()
+
+local function GenerateRandom9DigitNumber()
+    local num = ""
+    local digitCount = {} 
+    while #num < 9 do
+        local randDigit = tostring(math.random(0, 9))
+
+        digitCount[randDigit] = (digitCount[randDigit] or 0) + 1
+        if digitCount[randDigit] <= 2 then
+            num = num .. randDigit
+        end
+    end
+
+    return "." .. num 
+end
+
+local function CopyToClipboard(text)
+    if setclipboard then
+        setclipboard(text)
+    elseif syn and syn.write_clipboard then
+        syn.write_clipboard(text)
+    else
+        warn("Clipboard function not available!")
+    end
+end
+
+LeftGroupBox:AddButton('Generate & Copy 9 Digits', function()
+    local randomNumber = GenerateRandom9DigitNumber()
+    CopyToClipboard(randomNumber) 
+    Library:Notify('Copied: ' .. randomNumber) 
+end)
+
+LeftGroupBox:AddInput('Rank', {
+    Default = '',
+    Numeric = false, 
+    Finished = true, 
+    Text = 'Rank',
+    Tooltip = 'Spoof Rank', 
+
+    Placeholder = 'Input Any Rank You Want',    
+})
+
+Options.Rank:OnChanged(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Return) then
+        local HunterLicenseSpoof = {
+            SpoofRank = "" .. tostring(Options.Rank.Value)
+        }
+    
+        local player = game:GetService("Players").LocalPlayer
+        local gui = player:WaitForChild("PlayerGui")
+        local infoFrame = gui:WaitForChild("Menu"):WaitForChild("InfoFrame")
+    
+        local uiElements = {
+            SpoofRank = infoFrame:FindFirstChild("RankTxt"),
+        }
+    
+        if uiElements.SpoofRank then
+            uiElements.SpoofRank.Text = HunterLicenseSpoof.SpoofRank
+    
+            local leaderboardTitle = gui.Leaderboard.Leaderboard.ZenithRebornHolder.TextButton:FindFirstChild("Title")
+            if leaderboardTitle and leaderboardTitle:IsA("TextLabel") then
+                leaderboardTitle.Text = "[" .. HunterLicenseSpoof.SpoofRank .. "]"
+            end
+        else
+            warn("Nothing Found")
+        end
+    end
+end)
+
+LeftGroupBox:AddInput('Class', {
+    Default = '',
+    Numeric = false, 
+    Finished = true, 
+    Text = 'Class',
+    Tooltip = 'Spoof Class', 
+
+    Placeholder = 'Input Any Class You Want',    
+})
+
+Options.Class:OnChanged(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Return) then
+    local HunterLicenseSpoof = {
+        SpoofClass = "" .. tostring(Options.Class.Value)
+    }
+
+    local player = game:GetService("Players").LocalPlayer
+    local gui = player:WaitForChild("PlayerGui")
+    local infoFrame = gui:WaitForChild("Menu"):WaitForChild("InfoFrame")
+
+    local uiElements = {
+        SpoofClass = infoFrame:FindFirstChild("ClassTxt")
+    }
+
+    if uiElements.SpoofClass then
+        uiElements.SpoofClass.Text = HunterLicenseSpoof.SpoofClass
+    else
+        warn("Nothing Found")
+    end
+end
+end)
+
+LeftGroupBox:AddInput('Guild', {
+    Default = '',
+    Numeric = false, 
+    Finished = true, 
+    Text = 'Guild',
+    Tooltip = 'Spoof Guild', 
+
+    Placeholder = 'Input Any Name You Want',    
+})
+
+Options.Guild:OnChanged(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Return) then
+        local HunterLicenseSpoof = {
+            SpoofGuild = "" .. tostring(Options.Guild.Value)
+        }
+    
+        local player = game:GetService("Players").LocalPlayer
+        local gui = player:WaitForChild("PlayerGui")
+        local infoFrame = gui:WaitForChild("Menu"):WaitForChild("InfoFrame")
+    
+        local uiElements = {
+            SpoofGuild = infoFrame:FindFirstChild("GuildTxt"),
+        }
+    
+        if uiElements.SpoofGuild then
+            uiElements.SpoofGuild.Text = HunterLicenseSpoof.SpoofGuild
+    
+            local leaderboardGuild = gui.Leaderboard.Leaderboard.ZenithRebornHolder.TextButton:FindFirstChild("Guild")
+            if leaderboardGuild and leaderboardGuild:IsA("TextLabel") then
+                leaderboardGuild.Text = "[" .. HunterLicenseSpoof.SpoofGuild .. "]"
+            end
+        else
+            warn("Nothing Found")
+        end
+    end
+    
+end)
+
+LeftGroupBox:AddInput('HP', {
+    Default = '',
+    Numeric = false, 
+    Finished = true, 
+    Text = 'HP',
+    Tooltip = 'Spoof HP', 
+
+    Placeholder = 'Input Any HP You Want',    
+})
+
+Options.HP:OnChanged(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Return) then
+    local HunterLicenseSpoof = {
+        SpoofHP = "" .. tostring(Options.HP.Value)
+    }
+
+    local player = game:GetService("Players").LocalPlayer
+    local gui = player:WaitForChild("PlayerGui")
+    local infoFrame = gui:WaitForChild("Menu"):WaitForChild("InfoFrame")
+
+    local uiElements = {
+        SpoofHP = infoFrame:FindFirstChild("HPTxt"),
+    }
+
+    if uiElements.SpoofHP then
+        uiElements.SpoofHP.Text = HunterLicenseSpoof.SpoofHP
+    else
+        warn("Nothing Found")
+    end
+end
+end)
+
+LeftGroupBox:AddInput('DMG', {
+    Default = '',
+    Numeric = false, 
+    Finished = true, 
+    Text = 'DMG',
+    Tooltip = 'Spoof DMG', 
+
+    Placeholder = 'Input Any DMG You Want',    
+})
+
+Options.DMG:OnChanged(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Return) then
+    local HunterLicenseSpoof = {
+        SpoofDMG = "" .. tostring(Options.DMG.Value)
+    }
+
+    local player = game:GetService("Players").LocalPlayer
+    local gui = player:WaitForChild("PlayerGui")
+    local infoFrame = gui:WaitForChild("Menu"):WaitForChild("InfoFrame")
+
+    local uiElements = {
+        SpoofDMG = infoFrame:FindFirstChild("DmgTxt"),
+    }
+
+    if uiElements.SpoofDMG then
+        uiElements.SpoofDMG.Text = HunterLicenseSpoof.SpoofDMG
+    else
+        warn("Nothing Found")
+    end
+end
+end)
+
+RightGroupBox:AddInput('DungeonClears', {
+    Default = '',
+    Numeric = false, 
+    Finished = true, 
+    Text = 'Dungeon Clears',
+    Tooltip = 'Spoof Dungeon Clears', 
+
+    Placeholder = 'Input Any Amount You Want',    
+})
+
+Options.DungeonClears:OnChanged(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Return) then
+    local HunterLicenseSpoof = {
+        DungeonClear = "Dungeon Clears: " .. tostring(Options.DungeonClears.Value)
+    }
+
+    local player = game:GetService("Players").LocalPlayer
+    local gui = player:WaitForChild("PlayerGui")
+    local infoFrame = gui:WaitForChild("Menu"):WaitForChild("InfoFrame")
+
+    local uiElements = {
+        DungeonClear = infoFrame:FindFirstChild("DungeonClears")
+    }
+
+    if uiElements.DungeonClear then
+        uiElements.DungeonClear.Text = HunterLicenseSpoof.DungeonClear
+    else
+        warn("Nothing Found")
+    end
+end
+end)
+
+RightGroupBox:AddInput('HunterLevel', {
+    Default = '',
+    Numeric = false, 
+    Finished = true, 
+    Text = 'Hunter Level',
+    Tooltip = 'Spoof Hunter Level', 
+
+    Placeholder = 'Input Any Amount You Want',    
+})
+
+Options.HunterLevel:OnChanged(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Return) then
+    local HunterLicenseSpoof = {
+        HunterLvl = "Hunter Level: " .. tostring(Options.HunterLevel.Value)
+    }
+
+    local player = game:GetService("Players").LocalPlayer
+    local gui = player:WaitForChild("PlayerGui")
+    local infoFrame = gui:WaitForChild("Menu"):WaitForChild("InfoFrame")
+
+    local uiElements = {
+        HunterLvl = infoFrame:FindFirstChild("HunterLevel"),
+    }
+
+    if uiElements.HunterLvl then
+        uiElements.HunterLvl.Text = HunterLicenseSpoof.HunterLvl
+    else
+        warn("Nothing Found")
+    end
+end
+end)
+
+RightGroupBox:AddInput('StyleLevel', {
+    Default = '',
+    Numeric = false, 
+    Finished = true, 
+    Text = 'Style Level',
+    Tooltip = 'Spoof Style Level', 
+
+    Placeholder = 'Input Any Amount You Want',    
+})
+
+Options.StyleLevel:OnChanged(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Return) then
+    local HunterLicenseSpoof = {
+        StyleLvl = "Hunter Level: " .. tostring(Options.StyleLevel.Value)
+    }
+
+    local player = game:GetService("Players").LocalPlayer
+    local gui = player:WaitForChild("PlayerGui")
+    local infoFrame = gui:WaitForChild("Menu"):WaitForChild("InfoFrame")
+
+    local uiElements = {
+    	StyleLvl = infoFrame:FindFirstChild("StyleLevel"),
+    }
+
+    if uiElements.StyleLvl then
+        uiElements.StyleLvl.Text = HunterLicenseSpoof.StyleLvl
+    else
+        warn("Nothing Found")
+    end
+end
+end)
+
+RightGroupBox:AddInput('Style', {
+    Default = '',
+    Numeric = false, 
+    Finished = true, 
+    Text = 'Style',
+    Tooltip = 'Spoof Style', 
+
+    Placeholder = 'Input Any Amount You Want',    
+})
+
+Options.Style:OnChanged(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Return) then
+    local HunterLicenseSpoof = {
+        SpoofStyle = "Style: " .. tostring(Options.Style.Value)
+    }
+
+    local player = game:GetService("Players").LocalPlayer
+    local gui = player:WaitForChild("PlayerGui")
+    local infoFrame = gui:WaitForChild("Menu"):WaitForChild("InfoFrame")
+
+    local uiElements = {
+        SpoofStyle = infoFrame:FindFirstChild("StyleTxt"),
+    }
+
+    if uiElements.SpoofStyle then
+        uiElements.SpoofStyle.Text = HunterLicenseSpoof.SpoofStyle
+    else
+        warn("Nothing Found")
+    end
+end
+end)
+
+LeftGroupBox2:AddInput('Name', {
+    Default = '',
+    Numeric = false, 
+    Finished = true, 
+    Text = 'Name',
+    Tooltip = 'Spoof Name', 
+
+    Placeholder = 'Input Any Name You Want',    
+})
+
+Options.Name:OnChanged(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Return) then
+    local HunterLicenseSpoof = {
+        SpoofName = "" .. tostring(Options.Name.Value)
+    }
+
+    local player = game:GetService("Players").LocalPlayer
+    local gui = player:WaitForChild("PlayerGui")
+    local infoFrame = gui:WaitForChild("Menu"):WaitForChild("InfoFrame")
+
+    local uiElements = {
+        SpoofName = infoFrame:FindFirstChild("Name"),
+    }
+
+    if uiElements.SpoofName then
+        uiElements.SpoofName.Text = HunterLicenseSpoof.SpoofName
+    else
+        warn("Nothing Found")
+    end
+end
+end)
+
+LeftGroupBox2:AddInput('GuildStatus', {
+    Default = '',
+    Numeric = false, 
+    Finished = true, 
+    Text = 'Guild Status',
+    Tooltip = 'Spoof Guild Status', 
+
+    Placeholder = 'Input Any Name You Want',    
+})
+
+Options.GuildStatus:OnChanged(function()
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Return) then
+    local HunterLicenseSpoof = {
+        SpoofGuildStatus = "" .. tostring(Options.GuildStatus.Value)
+    }
+
+    local player = game:GetService("Players").LocalPlayer
+    local gui = player:WaitForChild("PlayerGui")
+    local infoFrame = gui:WaitForChild("Menu"):WaitForChild("InfoFrame")
+
+    local uiElements = {
+        SpoofGuildStatus = infoFrame:FindFirstChild("Guild Member"),
+    }
+
+    if uiElements.SpoofGuildStatus then
+        uiElements.SpoofGuildStatus.Text = HunterLicenseSpoof.SpoofGuildStatus
+    else
+        warn("Nothing Found")
+    end
+end
+end)
+
+LeftGroupBox3:AddButton('ESP (TOGGLE WITH E)', function()
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local ESP_ENABLED = true  -- Track ESP status
+local ESP_LIST = {}  -- Store created ESP objects to manage toggling
+
+-- Function to create ESP for a player
+local function createESP(plr)
+    if plr == Players.LocalPlayer then return end -- Prevent ESP on the local player
+    
+    local character = plr.Character
+    if not character or not character:FindFirstChild("Head") then return end
+    
+    local head = character:FindFirstChild("Head")
+    
+    -- Create BillboardGui
+    local billboard = Instance.new("BillboardGui")
+    billboard.Name = plr.Name .. "_ESP"
+    billboard.Adornee = head
+    billboard.Size = UDim2.new(0, 200, 0, 100)  -- Increased size for better visibility
+    billboard.StudsOffset = Vector3.new(0, 2, 0)
+    billboard.AlwaysOnTop = true
+    billboard.Parent = game.CoreGui
+    
+    -- Create TextLabel for player name and health
+    local nameTag = Instance.new("TextLabel")
+    nameTag.Size = UDim2.new(1, 0, 0.4, 0)  -- Adjusted size to leave space for distance text
+    nameTag.BackgroundTransparency = 1
+    nameTag.TextColor3 = Color3.new(1, 1, 1)
+    nameTag.TextStrokeTransparency = 0.5
+    nameTag.TextScaled = true
+    nameTag.TextSize = 5  -- Decreased text size for better readability
+    nameTag.Text = plr.Name:upper()
+    nameTag.Parent = billboard
+    
+    -- Create TextLabel for health
+    local healthTag = Instance.new("TextLabel")
+    healthTag.Size = UDim2.new(1, 0, 0.3, 0)  -- Adjusted size to leave space for health
+    healthTag.Position = UDim2.new(0, 0, 0.4, 0)  -- Position below the name tag
+    healthTag.BackgroundTransparency = 1
+    healthTag.TextColor3 = Color3.new(1, 1, 1)
+    healthTag.TextStrokeTransparency = 0.5
+    healthTag.TextScaled = true
+    healthTag.TextSize = 5  -- Adjusted for better readability
+    healthTag.Parent = billboard
+    
+    -- Create TextLabel for distance
+    local distTag = Instance.new("TextLabel")
+    distTag.Size = UDim2.new(1, 0, 0.3, 0)  -- Adjusted size for distance text
+    distTag.Position = UDim2.new(0, 0, 0.7, 0)  -- Position below health
+    distTag.BackgroundTransparency = 1
+    distTag.TextColor3 = Color3.new(1, 1, 1)
+    distTag.TextStrokeTransparency = 0.5
+    distTag.TextScaled = true
+    distTag.TextSize = 5  -- Adjusted for better readability
+    distTag.Text = "Dist: 0 studs"  -- Default text for distance
+    distTag.Parent = billboard
+    
+    -- Update function to change the health and distance dynamically
+    local function updateESP()
+        if character and character:FindFirstChild("Humanoid") then
+            local humanoid = character:FindFirstChild("Humanoid")
+            local distance = (Players.LocalPlayer.Character.PrimaryPart.Position - head.Position).Magnitude
+            nameTag.Text = plr.Name:upper()  -- Update player name
+            healthTag.Text = string.format("HP: %.0f", humanoid.Health)  -- Update health
+            distTag.Text = string.format("Dist: %.0f studs", distance)  -- Update distance
+        else
+            billboard:Destroy()
+        end
+    end
+    
+    -- Connect update to RenderStepped
+    local updateConnection
+    updateConnection = RunService.RenderStepped:Connect(function()
+        if not character or not character.Parent then
+            updateConnection:Disconnect()
+            billboard:Destroy()
+        else
+            updateESP()
+        end
+    end)
+
+    -- Store the billboard in the ESP_LIST to manage toggling
+    ESP_LIST[plr.UserId] = billboard
+end
+
+-- Function to toggle ESP on or off
+local function toggleESP()
+    ESP_ENABLED = not ESP_ENABLED
+    if ESP_ENABLED then
+        -- Create ESP for all players currently in the game
+        for _, player in pairs(Players:GetPlayers()) do
+            createESP(player)  -- Create ESP for existing players
+        end
+        -- Detect new players
+        Players.PlayerAdded:Connect(function(player)
+            if ESP_ENABLED then
+                createESP(player)
+            end
+        end)
+    else
+        -- Destroy all ESP objects
+        for _, billboard in pairs(ESP_LIST) do
+            billboard:Destroy()
+        end
+        ESP_LIST = {}  -- Clear the ESP_LIST
+    end
+end
+
+-- Toggle ESP with the E key
+UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.E then
+        toggleESP()
+    end
+end)
+
+-- Apply ESP to all players currently in the game when the script starts
+for _, player in pairs(Players:GetPlayers()) do
+    createESP(player)
+end
+end)
+
+Library.KeybindFrame.Visible = false; 
+Library:OnUnload(function()
+    Library.Unloaded = true
+end)
+
+local MenuGroup = Tabs['Settings']:AddLeftGroupbox('Menu')
+
+MenuGroup:AddButton('Unload', function() Library:Unload() end)
+MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'RightShift', NoUI = true, Text = 'Menu Keybind' })
+
+Library.ToggleKeybind = Options.MenuKeybind 
+
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+
+SaveManager:IgnoreThemeSettings()
+
+
+SaveManager:SetIgnoreIndexes({ 'MenuKeybind' })
+
+ThemeManager:SetFolder('MyScriptHub')
+SaveManager:SetFolder('MyScriptHub/specific-game')
+
+SaveManager:BuildConfigSection(Tabs['Settings'])
+
+ThemeManager:ApplyToTab(Tabs['Settings'])
+
+SaveManager:LoadAutoloadConfig()
